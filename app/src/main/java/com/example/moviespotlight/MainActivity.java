@@ -1,6 +1,7 @@
 package com.example.moviespotlight;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.search.SearchBar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +59,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<MovieModel>> call, Response<List<MovieModel>> response) {
                if(response.isSuccessful()){
-                   List<MovieModel> movies=response.body();
-                   MovieAdapter adapter=new MovieAdapter(movies,MainActivity.this);
-                   recyclerView.setAdapter(adapter);
+                   try {
+                       JSONObject jsonObject = new JSONObject();
+                       JSONArray results = jsonObject.getJSONArray("results");
+                       List<MovieModel> movies=new ArrayList<>();
+
+                       for (int i = 0; i < results.length(); i++) {
+                           JSONObject movie = results.getJSONObject(i);
+
+                           String title = movie.getString("title");
+                           String posterPath = movie.getString("poster_path");
+                           String releaseDate=movie.getString("release_date");
+                           double voteAverage = movie.getDouble("vote_average");
+                           String overview = movie.getString("overview");
 
 
+                           MovieModel movieModel=new MovieModel(title,overview,posterPath,releaseDate,voteAverage);
+                           movies.add(movieModel);
+
+
+                       }
+                       MovieAdapter adapter=new MovieAdapter(movies,MainActivity.this);
+                       recyclerView.setAdapter(adapter);
+                       recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+
+
+               }else{
+                   Toast.makeText(MainActivity.this, "service not working properly", Toast.LENGTH_SHORT).show();
                }
             }
 
@@ -73,12 +103,5 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-//        MovieAdapter adapter=new MovieAdapter(movie,this);
-//
-//        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
    }
 }
