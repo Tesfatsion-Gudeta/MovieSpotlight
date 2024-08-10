@@ -2,15 +2,15 @@ package com.example.moviespotlight;
 
 public class MovieModel {
 
-    private String title,overView,posterPath,releaseDate;
-    private Double rating;
+    private String title,overView,poster_path, release_date;
+    private Double vote_average;
 
-    public MovieModel(String title, String overView, String posterPath, String releaseDate, Double rating) {
+    public MovieModel(String title, String overView, String poster_Path, String releaseDate, Double vote_average) {
         this.title = title;
         this.overView = overView;
-        this.posterPath = posterPath;
-        this.releaseDate = releaseDate;
-        this.rating = rating;
+        this.poster_path = poster_Path;
+        this. release_date = releaseDate;
+        this.vote_average =vote_average;
     }
 
     public String getTitle() {
@@ -22,14 +22,14 @@ public class MovieModel {
     }
 
     public String getPosterPath() {
-        return posterPath;
+        return poster_path;
     }
 
     public String getReleaseDate() {
-        return releaseDate;
+        return  release_date;
     }
 
-    public Double getRating() {
-        return rating;
+    public Double getVote_average() {
+        return vote_average;
     }
 }

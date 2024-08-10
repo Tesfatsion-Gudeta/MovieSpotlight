@@ -44,9 +44,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         holder.title.setText(movies.get(position).getTitle());
-        holder.rating.setText(movies.get(position).getRating().toString());
+        if (movies.get(position).getVote_average() != null) {
+            holder.rating.setText("Rating: "+movies.get(position).getVote_average().toString());
+        } else {
+            holder.rating.setText("N/A");
+        }
 
-        Glide.with(context).asBitmap().load(BASE_URL+movies.get(position).getPosterPath()).into(holder.posterImage);
+        String posterUrl="https://image.tmdb.org/t/p/w500"+movies.get(position).getPosterPath();
+        Glide.with(context).asBitmap().load(posterUrl).into(holder.posterImage);
 
 
     }
