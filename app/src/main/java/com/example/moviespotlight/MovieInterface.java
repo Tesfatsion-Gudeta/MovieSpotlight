@@ -15,7 +15,6 @@ public interface MovieInterface {
             String apiKey,
             @Query("language")
             String language
-
     );
 
 

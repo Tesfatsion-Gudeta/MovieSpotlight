@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SearchBar searchBar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.movieRecycler);
         searchBar = findViewById(R.id.movieSearch);
-//        ArrayList<MovieModel> movies=new ArrayList<>();
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -50,18 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
         MovieInterface movieInterface = retrofit.create(MovieInterface.class);
 
-
-        Call<MovieResponse> call2 = movieInterface.getMovies(API_KEY, LANGUAGE);
-        call2.enqueue(new Callback<MovieResponse>() {
+        Call<MovieResponse> call = movieInterface.getMovies(API_KEY, LANGUAGE);
+        call.enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     MovieResponse movies = response.body();
 
-
                     MovieAdapter adapter = new MovieAdapter(movies.getResults(), MainActivity.this);
-
-
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
                 } else {
@@ -78,4 +74,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }
